@@ -2,8 +2,8 @@ import sys
 import urllib.request, json
 from tkinter import *
 from tkinter import ttk
-global indice_origen 
-global indice_destino
+from tkinter import messagebox
+
 ventana = Tk()
 duracion =StringVar()
 ruta =StringVar()
@@ -65,10 +65,9 @@ def print_result(previous_nodes, shortest_path, start_node, target_node):
  
     # Add the start node manually
     path.append(start_node)
-    duracion.set("Ruta:  ")
-    ruta.set("Duración:  ")
-    duracion.set(duracion.get()+"We found the following best path with a value of {}.".format(shortest_path[target_node] + atraso))
-    ruta.set(ruta.get()+" -> ".join(reversed(path)))
+    duracion.set("We found the following best path with a value of {}.".format(shortest_path[target_node] + atraso))
+    nodos = "-> \n".join(reversed(path))
+    ruta.set(nodos)
     print(duracion.get())
     print(ruta.get())
     Ruta.config(text=ruta.get())
@@ -280,12 +279,26 @@ graph = Graph(nodes, init_graph)
 
 
 
-
+def parrafo(lista):
+    if lista == []:
+        return ""
+    else:
+        return "- "+lista[0]+"\n"+parrafo(lista[1:])
 def posicion(lista,lugar):
     if lista[0] == lugar:
         return 0
     else:
         return 1+posicion(lista[1:],lugar)
+def informacion_origen():
+    if combo_origen.get()!= "":
+        mensaje = parrafo(Cercanias[posicion(Lugares,combo_origen.get())])
+        print(mensaje)
+        messagebox.showinfo(message=mensaje, title="Información")
+def informacion_destino():
+    if combo_desti.get()!= "":
+        mensaje = parrafo(Cercanias[posicion(Lugares,combo_desti.get())])
+        print(mensaje)
+        messagebox.showinfo(message=mensaje, title="Información")
 def prueba():
     if combo_origen.get()!= "" and combo_desti.get() != "":
         print("Origen   "+ str(posicion(Lugares,combo_origen.get())))
@@ -304,7 +317,6 @@ canvas = Canvas(ventana , width= 330, height = 310, bg = "#50328B")
 imagen = PhotoImage(file = "tecgraph.png")
 canvas.create_image(20,10,anchor=NW,image = imagen)
 canvas.place(x=515, y=15)
-Distancia=Button(ventana, text="Distancia",width=15, height=3, command=prueba)
 #|PUI 0  |EPT 1  |CIC 2   |ALC 3  |BJFF 4  |PGT 5  |ESLA 6 |ZDC 7  |TD 8
 
 #|F3M 9  |LT 10  |NPSS 11  |McD 12  |CME 13  |CIB 14
@@ -315,6 +327,57 @@ Lugares =[" Parque Urbanización Iztaru", " Entrada Principal TEC",
                         " Tec Digital", " F3 Mecatrónica", " Lago del TEC",
                         " Nuclear and Plasma Science Society", " McDonalds",
                         " Comedor Estudiantil"," Centro Investigación Biotecnología"]
+
+
+
+Cercanias = [["Horario: abierto las 24 horas","Estudio de ballet Maureen Rivera","Apartamentos Ronald-Escualo","Edificio Parasol"], ##0
+
+             ["Numero telefonico: +50625525333","Estacion de bicicletas","MTB RG Eventos","Super Fresnos"], ##1
+
+
+             ["Numero telefonico: +50625509160","Abierto de 7:30 AM - 4:30 PM","Recursos Humanos TEC",
+              "Vicerrectoría de Vida Estudiantil y Servicios Académicos"],                                   ##2
+
+             
+             ["Federación de Estudiantes del Tecnológico de Costa Rica (FEITEC)","Cajero automatico Banco Nacional","Cajero automatico Banco Popular",
+              "Cajero automatico Banco de Costa Rica"],                                                      ##3
+
+             ["Soda ASETEC","Centro de Investigación y de Servicios Químicos y Microbiológicos CEQIATEC","Restaurante Institucional",
+              "Disponibilidad de parqueo"],                                                                  ##4
+
+
+             ["Números de teléfono: +50625502763, +50625502563","Restaurante El Ferrocarril",
+              "Horario Gimnasio: 4:00 AM  - 10:00 PM | Horario Piscina: 7:30 AM  - 4:30 PM","Disponibilidad de parqueo"], ##5
+
+             ["Número telefónico: +50625914550","Centro Comercial El Pinar","Restaurante Estación 76","Walmart"],     ##6
+
+
+             ["Plaza de Fútbol TEC","TEC Emprende Lab","Edificios código F","Disponibilidad de parqueo"],  ##7
+
+
+             ["Horario: 7:00 AM - 4:30 PM","Número telefónico: +50625502069","La Reina del Mundo","Tribunal Institucional Electoral"],  ##8
+
+
+             ["Escuela de Agronegocios","Laboratorio Institucional de Microscopia","Parada de buses TEC - Cartago","Disponibilidad de parqueo"],  ##9
+
+
+             ["Soda El Lago","Kinder del TEC (ATIPTEC)","Oficina de Ingeniería del ITCR","Disponibilidad de parqueo"],  ##10
+
+             ["FUNDATEC","Horario: 8:00 AM - 5:00 PM","Número telefónico: +50625509314","Disponibilidad de parqueo"],  ##11
+
+
+             ["Horario de 9:00 AM - 12:00 AM","Número telefónico: +5069052860101","Tienda de Mascotas Más que Mascotas","Disponibilidad de parqueo"],  ##12
+
+
+             ["Horario: 7:00 AM  - 7:00 PM","Learning Commons. Sistema de Bibliotecas del TEC","Escuela Ingeniería de Salud Ocupacional",
+              "Disponibilidad de parqueo"],  ##13
+
+             
+             ["Número telefónico: +50625502479","Escuela Química e Ingeneria Ambiental","Bosques del TEC",
+              "Disponibilidad de parqueo"]   ##14
+             ] 
+
+
 combo_origen = ttk.Combobox(ventana)
 combo_origen.place(x=125, y=50)
 combo_origen.configure(width=30, height=50)
@@ -323,14 +386,21 @@ combo_desti = ttk.Combobox(ventana)
 combo_desti.configure(width=30, height=50)
 combo_desti.place(x=125, y=150)
 combo_desti["values"] = sorted(Lugares)
+Distancia=Button(ventana, text="Distancia",width=15, height=3, command=prueba)
 Distancia.place(x=20,y=200)
 Distancia.configure(width=10, height=2)
+Info_Origen=Button(ventana, text="?",width=15, height=3, command=informacion_origen)
+Info_Origen.place(x=335,y=50)
+Info_Origen.config(width=1, height=0)
+Info_Destino=Button(ventana, text="?",width=15, height=3, command= informacion_destino)
+Info_Destino.place(x=335,y=150)
+Info_Destino.config(width=1, height=0)
 Origen = Label(ventana, text="Origen")
 Origen.place(x=20, y=50)
 Destino = Label(ventana, text="Destino")
 Destino.place(x=20, y=150)
-ruta.set("Ruta:")
-duracion.set("Duracion:")
+ruta.set("#####")
+duracion.set("#####")
 Ruta = Label(ventana, text=ruta.get())
 Ruta.place(x=20, y=350)
 Duracion = Label(ventana, text=duracion.get())
