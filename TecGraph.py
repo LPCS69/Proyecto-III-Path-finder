@@ -9,12 +9,6 @@ duracion =StringVar()
 ruta =StringVar()
 
 """
-___________________________________Interfaz_______________________________
-"""
-
-
-
-"""
 ___________________________________Graph Class_______________________________
 """
 class Graph(object):
@@ -65,7 +59,7 @@ def print_result(previous_nodes, shortest_path, start_node, target_node):
  
     # Add the start node manually
     path.append(start_node)
-    duracion.set("We found the following best path with a value of {}.".format(shortest_path[target_node] + atraso))
+    duracion.set("We found the following best path with a value of {}.".format(shortest_path[target_node] + int(combo_atraso.get())))
     nodos = "-> \n".join(reversed(path))
     ruta.set(nodos)
     print(duracion.get())
@@ -170,8 +164,6 @@ nodes = [
     "Comedor Estudiantil",
     "Centro de Investigación de Biotecnología",  
 ]
-
-atraso = 2 #minutos
 velocidad = 83.33 #metros/minuto
  
 init_graph = {}
@@ -313,6 +305,7 @@ distancias("Zona Deportiva, Provincia de Cartago, Cartago","Canchas Sinteticas I
 ventana.title("TecGraph") 
 ventana.minsize(900,600) 
 ventana.maxsize(900,600)
+ventana.configure(bg="#308B51")
 canvas = Canvas(ventana , width= 330, height = 310, bg = "#50328B")
 imagen = PhotoImage(file = "tecgraph.png")
 canvas.create_image(20,10,anchor=NW,image = imagen)
@@ -327,6 +320,8 @@ Lugares =[" Parque Urbanización Iztaru", " Entrada Principal TEC",
                         " Tec Digital", " F3 Mecatrónica", " Lago del TEC",
                         " Nuclear and Plasma Science Society", " McDonalds",
                         " Comedor Estudiantil"," Centro Investigación Biotecnología"]
+
+Atraso = ["0", "2", "5", "7", "10", "15", "20"]
 
 
 
@@ -380,29 +375,40 @@ Cercanias = [["Horario: abierto las 24 horas","Estudio de ballet Maureen Rivera"
 
 combo_origen = ttk.Combobox(ventana)
 combo_origen.place(x=125, y=50)
-combo_origen.configure(width=30, height=50)
+combo_origen.configure(width=33, height=50)
 combo_origen["values"] = sorted(Lugares)
 combo_desti = ttk.Combobox(ventana)
-combo_desti.configure(width=30, height=50)
-combo_desti.place(x=125, y=150)
+combo_desti.configure(width=33, height=50)
+combo_desti.place(x=125, y=110)
 combo_desti["values"] = sorted(Lugares)
-Distancia=Button(ventana, text="Distancia",width=15, height=3, command=prueba)
-Distancia.place(x=20,y=200)
+combo_atraso = ttk.Combobox(ventana)
+combo_atraso.place(x=125, y=170)
+combo_atraso.configure(width=7, height=50)
+combo_atraso["values"] = Atraso
+Distancia=Button(ventana, text="Distancia",width=15, height=3, command=prueba,bg="#30638B")
+Distancia.place(x=20,y=210)
 Distancia.configure(width=10, height=2)
-Info_Origen=Button(ventana, text="?",width=15, height=3, command=informacion_origen)
-Info_Origen.place(x=335,y=50)
+Info_Origen=Button(ventana, text="?",width=15, height=3, command=informacion_origen,bg="#30638B")
+Info_Origen.place(x=350,y=47)
 Info_Origen.config(width=1, height=0)
-Info_Destino=Button(ventana, text="?",width=15, height=3, command= informacion_destino)
-Info_Destino.place(x=335,y=150)
+Info_Destino=Button(ventana, text="?",width=15, height=3, command= informacion_destino,bg="#30638B")
+Info_Destino.place(x=350,y=107)
 Info_Destino.config(width=1, height=0)
-Origen = Label(ventana, text="Origen")
+Origen = Label(ventana, text="Origen",bg="#308B51")
 Origen.place(x=20, y=50)
-Destino = Label(ventana, text="Destino")
-Destino.place(x=20, y=150)
+Destino = Label(ventana, text="Destino",bg="#308B51")
+Destino.place(x=20, y=110)
+Atraso = Label(ventana, text="Atraso",bg="#308B51")
+Atraso.place(x=20, y=170)
 ruta.set("#####")
 duracion.set("#####")
-Ruta = Label(ventana, text=ruta.get())
+Ruta = Label(ventana, text=ruta.get(),bg="#308B51")
+Ruta.place(x=120, y=350)
+Duracion = Label(ventana, text=duracion.get(),bg="#308B51")
+
+Duracion.place(x=120, y=450)
+Ruta = Label(ventana, text="Ruta:    ",bg="#308B51")
 Ruta.place(x=20, y=350)
-Duracion = Label(ventana, text=duracion.get())
+Duracion = Label(ventana, text="Duración:",bg="#308B51")
 Duracion.place(x=20, y=450)
 ventana.mainloop()
