@@ -320,7 +320,7 @@ Lugares =[" Parque Urbanización Iztaru", " Entrada Principal TEC",
                         " Nuclear and Plasma Science Society", " McDonalds",
                         " Comedor Estudiantil"," Centro Investigación Biotecnología"]
 
-Atraso = ["2", "5", "7", "10", "15", "20"]
+Atraso = ["0", "2", "5", "7", "10", "15", "20"]
 
 
 
